@@ -46,10 +46,10 @@ def archive_email(yga, reattach=True, save=True):
                 for attach in message['attachments']:
                     print "** Fetching attachment '%s'" % (attach['filename'],)
                     if 'link' in attach:
-                        atts[attach['filename']] = yga.get_file(attach['link'])
+                        atts[attach['filename']] = yga.download_file(attach['link'])
                     elif 'photoInfo' in attach:
                         photoinfo = get_best_photoinfo(attach['photoInfo'])
-                        atts[attach['filename']] = yga.get_file(photoinfo['displayURL'])
+                        atts[attach['filename']] = yga.download_file(photoinfo['displayURL'])
 
                     if save:
                         fname = "%s-%s" % (id, basename(attach['filename']))

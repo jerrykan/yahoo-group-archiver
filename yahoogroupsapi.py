@@ -45,12 +45,7 @@ class YahooGroupsAPI:
         # For now check that we 'enough' cookies set.
         return len(self.s.cookies) > 2
 
-    def get_file(self, url):
-        r = self.s.get(url)
-        r.raise_for_status()
-        return r.content
-
-    def download_file(self, url, f, **args):
+    def download_file(self, url, f=None, **args):
         retries = 5
         while True:
             r = self.s.get(url, stream=True, **args)
@@ -61,6 +56,10 @@ class YahooGroupsAPI:
                 continue
             r.raise_for_status()
             break
+
+        if f is None:
+            return r.content
+
         for chunk in r.iter_content(chunk_size=4096):
             f.write(chunk)
 
